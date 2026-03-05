@@ -12,11 +12,21 @@ st.set_page_config(
 )
 
 # -----------------------
-# Load model
+# Load model (cached)
 # -----------------------
 
-model = pickle.load(open("booking_model.pkl","rb"))
-model_columns = pickle.load(open("model_columns.pkl","rb"))
+@st.cache_resource
+def load_model():
+    with open("booking_model.pkl", "rb") as f:
+        model = pickle.load(f)
+
+    with open("model_columns.pkl", "rb") as f:
+        columns = pickle.load(f)
+
+    return model, columns
+
+
+model, model_columns = load_model()
 
 st.title("✈️ British Airways Booking Prediction")
 
